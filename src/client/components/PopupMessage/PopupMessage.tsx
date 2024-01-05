@@ -6,39 +6,37 @@ import XIcon from '../../static/svgs/XIcon';
 import WarningIcon from '../../static/svgs/WarningIcon';
 import styles from './PopupMessage.scss';
 
-export enum PopupType {
-  Success = 'success',
-  Failure = 'failure',
-}
-
 type PopupProps = PropsWithChildren<{
-  type?: PopupType;
   message: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }>;
 
-const PopupMessage: FunctionComponent<PopupProps> = (props) => {
-  const { type = PopupType.Success, message, onClick } = props;
-  const success = type === PopupType.Success;
-  const failure = type === PopupType.Failure;
-  return (
-    <div className={classNames(styles.container, {
-      [styles.success]: success,
-      [styles.failure]: failure,
-    })}
-    >
-      <div className={styles.leftIcon}>
-        {success && <CheckmarkIcon />}
-        {failure && <WarningIcon />}
-      </div>
-      <p>{message}</p>
-      <div className={styles.rightIcon}>
-        <button type="button" onClick={onClick}>
-          <XIcon />
-        </button>
-      </div>
+const SuccessPopup: FunctionComponent<PopupProps> = ({ message, onClick }) => (
+  <div className={classNames(styles.container, styles.success)}>
+    <div className={styles.leftIcon}>
+      <CheckmarkIcon />
     </div>
-  );
-};
+    <p>{message}</p>
+    <div className={styles.rightIcon}>
+      <button type="button" onClick={onClick}>
+        <XIcon />
+      </button>
+    </div>
+  </div>
+);
 
-export default PopupMessage;
+const FailurePopup: FunctionComponent<PopupProps> = ({ message, onClick }) => (
+  <div className={classNames(styles.container, styles.failure)}>
+    <div className={styles.leftIcon}>
+      <WarningIcon />
+    </div>
+    <p>{message}</p>
+    <div className={styles.rightIcon}>
+      <button type="button" onClick={onClick}>
+        <XIcon />
+      </button>
+    </div>
+  </div>
+);
+
+export { SuccessPopup, FailurePopup };
